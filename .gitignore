@@ -1,0 +1,5 @@
+__pycache__
+files/generate/*
+files/netsuite/*
+files/yayoi_kaikei/*
+config/local_staticlist.py
