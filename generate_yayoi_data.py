@@ -19,10 +19,13 @@ else:
     for row in ws.iter_rows(start_row + 1):
         transaction = {}
         for cell in row:
-            if (cell.column in header.values() and ws.cell(cell.row, header['Document Number']).value not in ['', 0, None, False]):
+            if (cell.column in header.values() and ws.cell(cell.row, header['Date']).value not in ['', 0, None, False]):
                 key = [key for key, value in header.items() if value == cell.column][0]
                 transaction[key] = cell.value
         if (transaction):
+            # NOTE:伝票番号が空欄の行は伝票番号に日付+blankを付与
+            if transaction['Document Number'] in ['', 0, None, False]:
+                transaction['Document Number'] = transaction['Date'].strftime('%Y%m%d') + 'blank'
             transactions.append(transaction)
     transactions = sorted(transactions, key=lambda transaction: (
         transaction['Date'], transaction['Document Number']))
